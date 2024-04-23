@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Warung Makan</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Formulir Pemesanan</h2>
+        <form id="orderForm" action="payment.html" method="GET">
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" name="nama" style="width: 80%;" required>
+
+            <label for="pesanan">Pesanan:</label>
+            <select id="pesanan" name="pesanan" style="width: 85%;">
+                <option value="0">Pilih Menu</option>
+                <option value="15000">Nasi Goreng - Rp15,000</option>
+                <option value="12000">Mie Ayam - Rp12,000</option>
+                <option value="10000">Sate - Rp10,000</option>
+                <option value="8000">Gado-gado - Rp8,000</option>
+            </select>
+
+            <label for="jumlah">Jumlah:</label>
+            <input type="number" id="jumlah" name="jumlah" min="1" style="width: 80%;" required>
+
+            <button type="button" onclick="addOrder()">Tambah Pesanan</button>
+
+            <div id="orderList"></div>
+
+            <input type="hidden" id="totalHargaInput" name="totalharga" value="0">
+
+            <button type="submit">Pesan</button>
+        </form>
+    </div>
+
+    <script>
+        let orders = [];
+        let totalPrice = 0;
+
+        function addOrder() {
+            const menuSelect = document.getElementById("pesanan");
+            const menuOption = menuSelect.options[menuSelect.selectedIndex];
+            const menuName = menuOption.text;
+            const menuPrice = parseFloat(menuOption.value);
+            const quantity = parseInt(document.getElementById("jumlah").value);
+
+            const order = {
+                name: menuName,
+                price: menuPrice,
+                quantity: quantity
+            };
+
+            orders.push(order);
+
+            const orderList = document.getElementById("orderList");
+            const orderItem = document.createElement("div");
+            orderItem.textContent = `${quantity}x ${menuName}`;
+            orderList.appendChild(orderItem);
+
+            totalPrice += menuPrice * quantity;
+            document.getElementById("totalHargaInput").value = totalPrice; // Update hidden input value
+        }
+    </script>
+</body>
+</html>

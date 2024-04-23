@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Include QR Code Generator library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Detail Pembayaran</h2>
+
+        <div id="orderDetails">
+            <!-- Detail pesanan akan ditampilkan di sini -->
+        </div>
+
+        <div id="totalPrice">
+            <!-- Total harga akan ditampilkan di sini -->
+        </div>
+
+        <div id="qrCodeContainer">
+            <!-- QR code akan ditampilkan di sini -->
+        </div>
+
+        <button onclick="confirmPayment()">Konfirmasi Pembayaran</button>
+    </div>
+
+    <script>
+        function confirmPayment() {
+            // Anda dapat menambahkan logika konfirmasi pembayaran di sini
+            alert("Pembayaran berhasil dikonfirmasi!");
+        }
+
+        // Ambil data pesanan dan total harga dari URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const totalHarga = urlParams.get('totalharga');
+        const orders = urlParams.getAll('pesanan');
+        const quantities = urlParams.getAll('jumlah');
+
+        // Tampilkan detail pesanan dan total harga
+        const orderDetailsContainer = document.getElementById('orderDetails');
+        orders.forEach((order, index) => {
+            const orderItem = document.createElement('div');
+            orderItem.textContent = `${quantities[index]}x ${order}`;
+            orderDetailsContainer.appendChild(orderItem);
+        });
+
+        const totalPriceContainer = document.getElementById('totalPrice');
+        totalPriceContainer.textContent = `Total Harga: Rp ${totalHarga}`;
+
+        // Generate QR code for payment
+        const qrCodeContainer = document.getElementById('qrCodeContainer');
+        const qrCode = qrcode(0, 'M');
+        qrCode.addData(`Total Harga: Rp ${totalHarga}`);
+        qrCode.make();
+        qrCodeContainer.innerHTML = qrCode.createImgTag();
+    </script>
+</body>
+</html>
